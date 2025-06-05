@@ -1,4 +1,8 @@
-""" Define the db models"""
+""" Define the db models
+
+    > TodoList
+    > TodoItem
+"""
 
 import enum
 from sqlalchemy import Column, Integer, String, ForeignKey, Enum
