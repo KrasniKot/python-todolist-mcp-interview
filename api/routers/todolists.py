@@ -7,24 +7,34 @@
         > Deletion
 """
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+
+from sqlalchemy.orm import Session
+
+from ..crud import TodoListCRUD
+from ..db import SessionLocal
+from ..schemas import TodoListCreate
+from ..db import get_db
 
 
 router = APIRouter()
+tlcrud = TodoListCRUD(SessionLocal)
 
 
 @router.post("/")
-def create_todolist():
-    """Create a new todo list"""
-    print("Creating a new todo list...")
-    return {"message": "Todo list created"}
+def create_todolist(data: TodoListCreate, db: Session = Depends(get_db)):
+    """ Creates a new todo list """
+    tlcrud  = TodoListCRUD(db)
+
+    return tlcrud.create(data)
 
 
 @router.get("/")
-def read_todolists():
-    """Get all todo lists"""
-    print("Fetching all todo lists...")
-    return {"data": []}
+def read_todolists(db: Session = Depends(get_db)):
+    """ Gets all todo lists"""
+    tlcrud = TodoListCRUD(db)
+
+    return {"data": tlcrud.get_all()}
 
 
 @router.get("/{todolist_id}")

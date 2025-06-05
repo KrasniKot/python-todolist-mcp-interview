@@ -7,7 +7,7 @@
 import enum
 from sqlalchemy import Column, Integer, String, ForeignKey, Enum
 from sqlalchemy.orm import relationship
-from app.db import Base
+from api.db import Base
 
 
 class TodoList(Base):
