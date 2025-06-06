@@ -7,8 +7,8 @@
 
 from pydantic import BaseModel
 from typing import Optional
-from enum import Enum
 
+from api.enums import StatusEnum
 
 ######## TodoList schemas
 class TodoListBase(BaseModel): name: str  # Defines the attributes a TodoList requires
@@ -26,12 +26,6 @@ class TodoListOut(TodoListBase):
 
 
 ######## TodoItem schemas
-class StatusEnum(str, Enum):
-    NOT_STARTED = "Not started"
-    IN_PROGRESS = "In progress"
-    FINISHED    = "Finished"
-
-
 class TodoItemBase(BaseModel):
     list_id     : int
     description : str
@@ -47,7 +41,7 @@ class TodoItemUpdate(BaseModel):
 
 
 class TodoItemOut(TodoItemBase):
-    task_id : int
+    task_id: int
 
     class Config: orm_mode = True
 ########

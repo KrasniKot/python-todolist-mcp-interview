@@ -13,7 +13,7 @@ from sqlalchemy.orm import Session
 
 from ..crud import TodoListCRUD
 from ..db import SessionLocal
-from ..schemas import TodoListCreate
+from ..schemas import TodoListCreate, TodoListUpdate, TodoItemOut
 from ..db import get_db
 
 
@@ -34,25 +34,36 @@ def read_todolists(db: Session = Depends(get_db)):
     """ Gets all todo lists"""
     tlcrud = TodoListCRUD(db)
 
-    return {"data": tlcrud.get_all()}
+    return {"lists": tlcrud.get_all()}
 
 
 @router.get("/{todolist_id}")
-def read_todolist(todolist_id: int):
-    """Get a specific todo list by its ID"""
-    print(f"Fetching todo list with ID {todolist_id}...")
-    return {"data": {"id": todolist_id}}
+def read_todolist(todolist_id: int, db: Session = Depends(get_db)):
+    """ Gets a specific todo list by its ID """
+    tlcrud = TodoListCRUD(db)
+
+    return {"list": tlcrud.get(todolist_id)}
+
+
+@router.get("/todolists/{list_id}/items", response_model=list[TodoItemOut])
+def get_items_for_list(list_id: int, db: Session = Depends(get_db)):
+    """ Fetches all the items corresponding to a list """
+    crud  = TodoListCRUD(db)
+
+    return crud.get_items_list(list_id)
 
 
 @router.put("/{todolist_id}")
-def update_todolist(todolist_id: int):
-    """Update a todo list by its ID"""
-    print(f"Updating todo list with ID {todolist_id}...")
-    return {"message": f"Todo list {todolist_id} updated"}
+def update_todolist(todolist_id: int, update_data: TodoListUpdate, db: Session = Depends(get_db)):
+    """ Updates a todo list by its ID """
+    tlcrud = TodoListCRUD(db)
+
+    return {"updatedlist": tlcrud.update(todolist_id, update_data)}
 
 
 @router.delete("/{todolist_id}")
-def delete_todolist(todolist_id: int):
-    """Delete a todo list by its ID"""
-    print(f"Deleting todo list with ID {todolist_id}...")
-    return {"message": f"Todo list {todolist_id} deleted"}
+def delete_todolist(todolist_id: int, db: Session = Depends(get_db)):
+    """ Deletes a todo list by its ID """
+    tlcrud = TodoListCRUD(db)
+
+    return {"deletedlist": tlcrud.delete(todolist_id)}
