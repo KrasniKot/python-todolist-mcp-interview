@@ -2,7 +2,7 @@
 
 import requests
 
-from mcp.utils import BASE_URL
+from utils import BASE_URL
 
 
 def get_all_todoitems():
