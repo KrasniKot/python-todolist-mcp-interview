@@ -59,7 +59,7 @@ def get_items_for_list(list_id: int, db: Session = Depends(get_db)):
     return tlcrud.get_items_list(list_id)
 
 
-@router.put("/{todolist_id}", response_model=TodoListOut)
+@router.put("/{todolist_id}", response_model=TodoListUpdate)
 def update_todolist(todolist_id: int, update_data: TodoListUpdate, db: Session = Depends(get_db)):
     """ Updates a todo list by its ID """
     todo_list = TodoListCRUD(db).update(todolist_id, update_data)
@@ -69,7 +69,7 @@ def update_todolist(todolist_id: int, update_data: TodoListUpdate, db: Session =
     return todo_list
 
 
-@router.delete("/{todolist_id}")
+@router.delete("/{todolist_id}", response_model=bool)
 def delete_todolist(todolist_id: int, db: Session = Depends(get_db)):
     """ Deletes a todo list by its ID """
     todo_list = TodoListCRUD(db).delete(todolist_id)

@@ -93,12 +93,12 @@ class BaseCRUD(Generic[T, C, U]):
             >>> Deleted object
         """
         db_obj = self.get(obj_id)
-        if not db_obj: return None
+        if not db_obj: return False
 
         self.db.delete(db_obj)
         self.db.commit()
 
-        return db_obj
+        return True
 
 
 class TodoListCRUD(BaseCRUD[TodoList, TodoListCreate, TodoListUpdate]):
