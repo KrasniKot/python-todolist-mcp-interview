@@ -41,7 +41,7 @@ class TodoItemUpdate(BaseModel):
 
 
 class TodoItemOut(TodoItemBase):
-    task_id: int
+    id: int
 
     class Config: orm_mode = True
 ########

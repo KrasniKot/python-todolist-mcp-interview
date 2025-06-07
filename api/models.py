@@ -28,7 +28,7 @@ class TodoItem(Base):
     """ Defines a todo item (a task) """
     __tablename__ = "todo_items"
 
-    task_id     = Column(Integer, primary_key=True, index=True)
+    id          = Column(Integer, primary_key=True, index=True)
     list_id     = Column(Integer, ForeignKey("todo_lists.id"), nullable=False)
     description = Column(String, nullable=False)
     status      = Column(SAEnum(StatusEnum), default=StatusEnum.NOT_STARTED, nullable=False)

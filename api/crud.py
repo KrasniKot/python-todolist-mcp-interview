@@ -1,7 +1,10 @@
 """ Contains the CRUD functions that perform the actual interaction with the db """
 
 from typing import List, Optional, TypeVar, Generic, Type
+
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
+
 from api.models import TodoList, TodoItem
 from api.schemas import *
 
@@ -33,12 +36,16 @@ class BaseCRUD(Generic[T, C, U]):
             >>> Created Object
         """
         db_obj = self.model(**obj_in.dict())
-    
-        self.db.add(db_obj)
-        self.db.commit()
-        self.db.refresh(db_obj)
-    
-        return db_obj
+
+        try:
+            self.db.add(db_obj)
+            self.db.commit()
+            self.db.refresh(db_obj)
+            return db_obj
+
+        except IntegrityError:
+            self.db.rollback()  #rollback the session after error
+            return None
 
 
     def get(self, obj_id: int) -> Optional[T]:
@@ -86,7 +93,7 @@ class BaseCRUD(Generic[T, C, U]):
             >>> Deleted object
         """
         db_obj = self.get(obj_id)
-        if not db_obj: return False
+        if not db_obj: return None
 
         self.db.delete(db_obj)
         self.db.commit()
@@ -101,7 +108,8 @@ class TodoListCRUD(BaseCRUD[TodoList, TodoListCreate, TodoListUpdate]):
 
     def get_items_list(self, list_id: int) -> List[TodoItem]:
         """ Fetches all todo items belonging to a specific list ID """
-        return self.get(list_id).items
+        if todolist:= self.get(list_id): return todolist.items
+        return []
 
 
 class TodoItemCRUD(BaseCRUD[TodoItem, TodoItemCreate, TodoItemUpdate]):
