@@ -44,9 +44,9 @@ def read_todolists(db: Session = Depends(get_db)):
 @router.get("/{todolist_id}", response_model=TodoListOut)
 def read_todolist(todolist_id: int, db: Session = Depends(get_db)):
     """ Gets a specific todo list by its ID """
-    tlcrud = TodoListCRUD(db)
+    todo_list = TodoListCRUD(db).get(todolist_id)
 
-    if todo_list:= tlcrud.get(todolist_id) is None: raise HTTPException(status_code=404, detail="Todo list not found")
+    if todo_list is None: raise HTTPException(status_code=404, detail="Todo list not found")
 
     return todo_list
 
@@ -62,9 +62,9 @@ def get_items_for_list(list_id: int, db: Session = Depends(get_db)):
 @router.put("/{todolist_id}", response_model=TodoListOut)
 def update_todolist(todolist_id: int, update_data: TodoListUpdate, db: Session = Depends(get_db)):
     """ Updates a todo list by its ID """
-    tlcrud = TodoListCRUD(db)
+    todo_list = TodoListCRUD(db).update(todolist_id, update_data)
 
-    if todo_list:= tlcrud.update(todolist_id, update_data) is None: raise HTTPException(status_code=404, detail="Todo list not found")
+    if todo_list is None: raise HTTPException(status_code=404, detail="Todo list not found")
 
     return todo_list
 
@@ -72,8 +72,8 @@ def update_todolist(todolist_id: int, update_data: TodoListUpdate, db: Session =
 @router.delete("/{todolist_id}")
 def delete_todolist(todolist_id: int, db: Session = Depends(get_db)):
     """ Deletes a todo list by its ID """
-    tlcrud = TodoListCRUD(db)
+    todo_list = TodoListCRUD(db).delete(todolist_id)
 
-    if todo_list:= tlcrud.delete(todolist_id) is None: raise HTTPException(status_code=404, detail="Todo list not found")
+    if todo_list is None: raise HTTPException(status_code=404, detail="Todo list not found")
 
     return todo_list

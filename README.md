@@ -36,7 +36,7 @@ This repository is organised into the following main directories:
 The usage of this project is rather straight forward.
 
 1. Open `Claude Desktop`
-2. Prompt it to perform an action. Eg "List all the current todolists" or "Create a new todo list"
+2. Ask it to perform an action. Eg "List all the current todolists" or "Create a new todo list"
 
 ### Actions That Can Be Performed
 
@@ -84,7 +84,7 @@ The usage of this project is rather straight forward.
 If you went through the code, you probably found some details regarding the code style.
 
 - [x] Use `> param_name ....` description inside docstrings to describe function parameters.
-- [x] Use `>>> Returns ...` in docstrings to indicate return values, inline and concise.
+- [x] Use `>>> ...` in docstrings to indicate return values, inline and concise.
 - [x] Many functions as one-liners unless they require more logic.
 - [x] Parameters and comments in docstrings are visually aligned for better readability.
 - [x] Variables aligned for better readability.

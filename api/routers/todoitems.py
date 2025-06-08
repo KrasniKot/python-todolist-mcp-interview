@@ -38,9 +38,9 @@ def read_todoitems(db: Session = Depends(get_db)):
 @router.get("/{todoitem_id}", response_model=TodoItemOut)
 def read_todoitem(todoitem_id: int, db: Session = Depends(get_db)):
     """ Gets a specific todo item by its ID """
-    ticrud = TodoItemCRUD(db)
+    todoitem = TodoItemCRUD(db).get(todoitem_id)
 
-    if todoitem := ticrud.get(todoitem_id) is None: raise HTTPException(status_code=404, detail=f"Todo item with id <{todoitem_id}> was not found")
+    if todoitem is None: raise HTTPException(status_code=404, detail=f"Todo item with id <{todoitem_id}> was not found")
 
     return todoitem
 
