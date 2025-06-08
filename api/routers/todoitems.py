@@ -19,7 +19,7 @@ from ..db import get_db
 router = APIRouter()
 
 
-@router.post("/", response_model=TodoItemOut)
+@router.post("/", response_model=TodoItemCreate)
 def create_todoitem(data: TodoItemCreate, db: Session = Depends(get_db)):
     """ Creates a new todo item """
     # Check list exists

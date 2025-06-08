@@ -21,7 +21,7 @@ router = APIRouter()
 tlcrud = TodoListCRUD(SessionLocal)
 
 
-@router.post("/", response_model=TodoListOut)
+@router.post("/", response_model=TodoListCreate)
 def create_todolist(data: TodoListCreate, db: Session = Depends(get_db)):
     """ Creates a new todo list """
     tlcrud  = TodoListCRUD(db)
