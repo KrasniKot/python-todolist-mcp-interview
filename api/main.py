@@ -29,4 +29,3 @@ app.include_router(todoitems.router, prefix="/todoitems", tags=["Todo Items"])
 # Root endpoint
 @app.get("/")
 async def root(): return {"message": "TodoList MCP API running"}
-

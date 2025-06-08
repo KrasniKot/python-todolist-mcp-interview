@@ -51,7 +51,7 @@ def read_todolist(todolist_id: int, db: Session = Depends(get_db)):
     return todo_list
 
 
-@router.get("/todolists/{list_id}/items", response_model=list[TodoItemOut])
+@router.get("/{list_id}/items", response_model=list[TodoItemOut])
 def get_items_for_list(list_id: int, db: Session = Depends(get_db)):
     """ Fetches all the items corresponding to a list """
     tlcrud  = TodoListCRUD(db)
