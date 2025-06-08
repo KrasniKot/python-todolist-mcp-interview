@@ -36,8 +36,8 @@ class TodoItemCreate(TodoItemBase): pass  # Inherits all required fields
 
 
 class TodoItemUpdate(BaseModel):
-    description : Optional[str]        = None
-    status      : Optional[StatusEnum] = None
+    description : str
+    status      : StatusEnum
 
 
 class TodoItemOut(TodoItemBase):

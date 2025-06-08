@@ -11,28 +11,27 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from sqlalchemy.orm import Session
 
-from ..crud import TodoItemCRUD
-from ..db import SessionLocal
+from ..crud import TodoItemCRUD, TodoListCRUD
 from ..schemas import TodoItemCreate, TodoItemUpdate, TodoItemOut
 from ..db import get_db
 
 
 router = APIRouter()
-ticrud = TodoItemCRUD(SessionLocal)
 
 
 @router.post("/", response_model=TodoItemOut)
 def create_todoitem(data: TodoItemCreate, db: Session = Depends(get_db)):
     """ Creates a new todo item """
+    # Check list exists
+    if not TodoListCRUD(db).get(data.list_id): raise HTTPException(status_code=404, detail=f"TodoList with id <{data.list_id}> was not found")
+
     return TodoItemCRUD(db).create(data)
 
 
 @router.get("/", response_model=list[TodoItemOut])
 def read_todoitems(db: Session = Depends(get_db)):
     """ Gets all todo items"""
-    ticrud = TodoItemCRUD(db)
-
-    return ticrud.get_all()
+    return TodoItemCRUD(db).get_all()
 
 
 @router.get("/{todoitem_id}", response_model=TodoItemOut)

@@ -86,7 +86,7 @@ class BaseCRUD(Generic[T, C, U]):
         return db_obj
 
 
-    def delete(self, obj_id: int) -> bool:
+    def delete(self, obj_id: int):
         """ Deletes an object based on its id
             > obj_id .... id of the object to be deleted
 
